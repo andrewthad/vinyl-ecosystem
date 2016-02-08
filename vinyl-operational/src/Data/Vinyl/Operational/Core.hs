@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 module Data.Vinyl.Operational.Core where
 
 import           Control.Monad
@@ -10,8 +11,8 @@ import           Data.Vinyl.Plus.Types
 
 data ApplyInstr m instr = ApplyInstr (forall a. instr a -> m a)
 
-coinstr :: ToCoRec instr rs => instr a -> ProgramT (FunctorCoRec rs) m a
-coinstr instr = singleton (FunctorCoRec (toCoRec (Flap instr)))
+coinstr :: CElem instr rs => instr a -> ProgramT (FunctorCoRec rs) m a
+coinstr instr = singleton (FunctorCoRec (clift (Flap instr)))
 
 recApplyInstr :: Rec (ApplyInstr m) instrs -> FunctorCoRec instrs a -> m a
 recApplyInstr (_ :& rnext) (FunctorCoRec (CoRecThere cnext)) =
@@ -55,5 +56,7 @@ cointerpretAroundMonadT arounds interpreters = eval <=< viewT
     recAroundInstr2 arounds m a
     cointerpretAroundMonadT arounds interpreters (k a)
 
+castProgramT :: (Monad m, CSubset sub super) => ProgramT (FunctorCoRec sub) (ProgramT (FunctorCoRec super) m) a -> ProgramT (FunctorCoRec super) m a
+castProgramT prog = mapProgramT (FunctorCoRec . ccast . getFunctorCoRec) prog
 
 

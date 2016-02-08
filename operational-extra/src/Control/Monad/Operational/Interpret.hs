@@ -13,6 +13,9 @@ instance Applicative m => Monoid (Around m instr) where
     (g1,g2) = g instr
     in (f1 *> g1, f2 *> g2)
 
+mapProgramT :: Monad m => (forall b. instr1 b -> instr2 b) -> ProgramT instr1 (ProgramT instr2 m) a -> ProgramT instr2 m a
+mapProgramT f prog = interpretWithMonadT (singleton . f) prog
+
 interpretWithMonadT :: forall instr m b. Monad m
   => (forall a. instr a -> m a) -> ProgramT instr m b -> m b
 interpretWithMonadT f = eval <=< viewT

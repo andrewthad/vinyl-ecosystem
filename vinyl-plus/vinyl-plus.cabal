@@ -33,11 +33,11 @@ library
     DataKinds
     GADTs
     MultiParamTypeClasses
-    -- FlexibleInstances
-    -- FlexibleContexts
     TypeFamilies
     StandaloneDeriving
-
+    ConstraintKinds
+    -- FlexibleInstances
+    -- FlexibleContexts
 
 source-repository head
   type:     git

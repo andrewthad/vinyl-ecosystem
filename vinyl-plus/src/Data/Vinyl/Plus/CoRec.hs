@@ -4,6 +4,7 @@
 module Data.Vinyl.Plus.CoRec where
 
 import           Data.Vinyl.Core
+import           Data.Vinyl.TypeLevel
 
 data CoRec :: (u -> *) -> [u] -> * where
   CoRecHere  :: !(f r) -> CoRec f (r ': rs)
@@ -31,6 +32,47 @@ instance (Show (CoRec f (s ': rs)), Show (f r)) => Show (CoRec f (r ': s ': rs))
   show (CoRecHere a) = "CoRecHere (" ++ show a ++ ")"
   show (CoRecThere cr) = "CoRecThere (" ++ show cr ++ ")"
 
+class i ~ RIndex r rs => CElemX (r :: k) (rs :: [k]) (i :: Nat) where
+  clift :: f r -> CoRec f rs
+
+instance (r ~ s) => CElemX r (s ': rs) 'Z where
+  clift = CoRecHere
+
+instance (RIndex r (s ': rs) ~ 'S i, CElemX r rs i) => CElemX r (s ': rs) ('S i) where
+  clift v = CoRecThere (clift v)
+
+class is ~ RImage sub super => CSubsetX (sub :: [k]) (super :: [k]) is where
+  ccast :: CoRec f sub -> CoRec f super
+
+instance CSubsetX '[] super '[] where
+  ccast _ = error "CSubset: an empty CoRec is not possible"
+
+instance (CElemX r super i , CSubsetX sub super is) => CSubsetX (r ': sub) super (i ': is) where
+  ccast (CoRecHere v) = clift v
+  ccast (CoRecThere cr) = ccast cr
+
+type CElem r rs = CElemX r rs (RIndex r rs)
+type CSubset sub super = CSubsetX sub super (RImage sub super)
+
+-- example :: CoRec Maybe '[Bool,Int,Double]
+-- example = clift (Just (4 :: Int))
+--
+-- example2 :: CoRec Maybe '[Bool,Int] -> CoRec Maybe '[Int,Bool,Char]
+-- example2 = ccast
+
+-- class ToCoRec r rs where
+--   toCoRec :: f r -> CoRec f rs
+--   fromCoRec :: CoRec f rs -> Maybe (f r)
+-- instance {-# OVERLAPPABLE #-} ToCoRec r rs => ToCoRec r (a ': rs) where
+--   toCoRec r = CoRecThere (toCoRec r)
+--   fromCoRec (CoRecHere _) = Nothing
+--   fromCoRec (CoRecThere cnext) = fromCoRec cnext
+-- instance {-# OVERLAPPING #-} ToCoRec r (r ': rs) where
+--   toCoRec = CoRecHere
+--   fromCoRec (CoRecHere v) = Just v
+--   fromCoRec (CoRecThere _) = Nothing
+--
+
 -- instance (Show1 f, Show r) => Show (CoRec f '[r]) where
 --   showsPrec i (CoRecHere a) = id
 --     . showString "CoRecHere " . showsPrec1 11 a
@@ -45,18 +87,5 @@ instance (Show (CoRec f (s ': rs)), Show (f r)) => Show (CoRec f (r ': s ': rs))
 -- instance (Show (CoRec f rs), Show (f r)) => Show (CoRec f (r ': rs)) where
 --   show (CoRecHere a) = "CoRecHere (" ++ show a ++ ")"
 --   show (CoRecThere cr) = "CoRecThere (" ++ show cr ++ ")"
-
-
-class ToCoRec r rs where
-  toCoRec :: f r -> CoRec f rs
-  fromCoRec :: CoRec f rs -> Maybe (f r)
-instance {-# OVERLAPPABLE #-} ToCoRec r rs => ToCoRec r (a ': rs) where
-  toCoRec r = CoRecThere (toCoRec r)
-  fromCoRec (CoRecHere _) = Nothing
-  fromCoRec (CoRecThere cnext) = fromCoRec cnext
-instance {-# OVERLAPPING #-} ToCoRec r (r ': rs) where
-  toCoRec = CoRecHere
-  fromCoRec (CoRecHere v) = Just v
-  fromCoRec (CoRecThere _) = Nothing
 
 
