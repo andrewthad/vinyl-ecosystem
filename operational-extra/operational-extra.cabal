@@ -17,8 +17,10 @@ library
   exposed-modules:     Control.Monad.Operational.Interpret
                        Control.Monad.Operational.Wait
                        Control.Monad.Operational.Exception
+                       Control.Monad.Operational.Now
   build-depends:       base >= 4.7 && < 5
                      , operational
+                     , time
   default-language:    Haskell2010
   default-extensions:
     RankNTypes
