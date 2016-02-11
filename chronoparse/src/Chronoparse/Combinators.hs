@@ -9,8 +9,12 @@ import           Data.ByteString                  (ByteString)
 import qualified Data.ByteString                  as ByteString
 import qualified Data.ByteString.Char8            as BC8
 import           Data.Char                        (ord)
+import qualified Data.Char                        as Char
 import           Data.Coerce                      (coerce)
 import           Data.Vinyl
+
+nonDigit :: Chronoparser 'None
+nonDigit = noneParser $ void (Parser.satisfy (not . Char.isDigit))
 
 capitalT :: Chronoparser 'None
 capitalT = noneParser $ void (Parser.char 'T')

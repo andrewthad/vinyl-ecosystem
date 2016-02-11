@@ -5,26 +5,48 @@ import           Chronoparse.Types
 import           Data.Vinyl.Core
 
 date :: Rec Chronoparser '[ 'Year,'None,'Month,'None,'Day]
-date = go
+date = dateSeparatedBy hyphen
+
+time :: Rec Chronoparser '[ 'Hour24, 'None, 'Minute, 'None, 'Second ]
+time = timeSeparatedBy colon
+
+datetime :: Rec Chronoparser
+  ('[ 'Year,'None,'Month,'None,'Day,'None
+    , 'Hour24, 'None, 'Minute, 'None, 'Second ])
+datetime = rappend date (capitalT :& time)
+
+-- | Allows any non-numeric separator to be used
+--   instead of just the hyphen.
+dateLenient :: Rec Chronoparser '[ 'Year,'None,'Month,'None,'Day]
+dateLenient = dateSeparatedBy nonDigit
+
+-- | Allows any non-numeric separator to be used
+--   instead of just the colon.
+timeLenient :: Rec Chronoparser '[ 'Hour24, 'None, 'Minute, 'None, 'Second ]
+timeLenient = timeSeparatedBy nonDigit
+
+datetimeLenient :: Rec Chronoparser
+  ('[ 'Year,'None,'Month,'None,'Day,'None
+    , 'Hour24, 'None, 'Minute, 'None, 'Second ])
+datetimeLenient = rappend dateLenient (nonDigit :& timeLenient)
+
+dateSeparatedBy :: Chronoparser 'None -> Rec Chronoparser '[ 'Year,'None,'Month,'None,'Day]
+dateSeparatedBy separator = go
   where
   go = yearFourDigit
-    :& hyphen
+    :& separator
     :& monthPadded
-    :& hyphen
+    :& separator
     :& dayPadded
     :& RNil
 
-time :: Rec Chronoparser '[ 'Hour24, 'None, 'Minute, 'None, 'Second ]
-time = go
+timeSeparatedBy :: Chronoparser 'None -> Rec Chronoparser '[ 'Hour24, 'None, 'Minute, 'None, 'Second ]
+timeSeparatedBy separator = go
   where
   go = hour24Padded
-    :& hyphen
+    :& separator
     :& minutePadded
-    :& hyphen
+    :& separator
     :& secondPadded
     :& RNil
-
-datetime :: Rec Chronoparser ('[ 'Year,'None,'Month,'None,'Day,'None
-                               , 'Hour24, 'None, 'Minute, 'None, 'Second ])
-datetime = rappend date (capitalT :& time)
 
