@@ -59,9 +59,15 @@ modify (CoRecHere (Endo g)) (Identity r :& rs) = Identity (g r) :& rs
 modify (CoRecThere cr) (r :& rs) = r :& modify cr rs
 
 -- Requires that the list be infinite
-fromList :: Rec proxy rs -> [a] -> Rec (Constant a) rs
-fromList RNil _ = RNil
-fromList (_ :& rs) (x : xs) = Constant x :& fromList rs xs
+fromInfiniteList :: Rec proxy rs -> [a] -> Rec (Constant a) rs
+fromInfiniteList RNil _ = RNil
+fromInfiniteList (_ :& rs) (x : xs) = Constant x :& fromInfiniteList rs xs
+
+fromList :: Rec proxy rs -> [a] -> Maybe (Rec (Constant a) rs)
+fromList RNil _ = Just RNil
+fromList (_ :& rs) (x : xs) = case fromList rs xs of
+  Nothing -> Nothing
+  Just rxs -> Just (Constant x :& rxs)
 
 toList :: Rec (Constant a) rs -> [a]
 toList RNil = []
