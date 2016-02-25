@@ -12,7 +12,12 @@ import           Data.Vinyl.Functor      (Lift (..))
 import           Data.Vinyl.Plus.CoRec
 import           Data.Vinyl.Plus.Functor
 import           Data.Vinyl.Plus.Types
+import           Data.Vinyl.Plus.TypeLevel (ListAll)
 import           Data.Vinyl.TypeLevel
+import qualified Data.TypeMap as TypeMap
+import           Data.TypeMap (TypeMap)
+import           Data.Typeable (Typeable)
+import           Data.Proxy (Proxy(Proxy))
 
 -- This needs to be imported qualified
 
@@ -41,6 +46,23 @@ null (_ :& _) = False
 foldl :: (forall a. b -> f a -> b) -> b -> Rec f rs -> b
 foldl _ acc RNil = acc
 foldl f acc (r :& rs) = foldl f (f acc r) rs
+
+foldlConstrained :: ListAll rs c 
+  => proxy c -> (forall a. c a => b -> f a -> b) 
+  -> b -> Rec f rs -> b
+foldlConstrained p f acc RNil = acc
+foldlConstrained p f acc (r :& rs) = foldlConstrained p f (f acc r) rs
+
+toTypeMap :: ListAll rs Typeable => Rec f rs -> TypeMap f
+toTypeMap = foldlConstrained (Proxy :: Proxy Typeable) (flip TypeMap.insert) TypeMap.empty
+
+fromTypeMap :: ListAll rs Typeable => Rec proxy rs -> TypeMap f -> Maybe (Rec f rs)
+fromTypeMap RNil _ = Just RNil
+fromTypeMap (r :& rs) m = case TypeMap.lookup' r m of
+  Just v -> case fromTypeMap rs m of
+    Just vs -> Just (v :& vs)
+    Nothing -> Nothing
+  Nothing -> Nothing
 
 length :: Rec f rs -> Int
 length = foldl (\i _ -> i + 1) 0
