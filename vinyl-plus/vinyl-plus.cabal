@@ -21,6 +21,8 @@ library
                      , Data.Vinyl.Plus.Prelude
                      , Data.Vinyl.Plus.Functor.Prelude
                      , Data.Vinyl.Plus.TypeLevel
+                     , Data.Tuple.TypeLevel
+                     , Data.Tagged.Functor
   build-depends:       base >= 4.7 && < 5
                      , vinyl
                      , transformers
@@ -36,6 +38,7 @@ library
     TypeFamilies
     StandaloneDeriving
     ConstraintKinds
+    ScopedTypeVariables
     -- FlexibleInstances
     -- FlexibleContexts
 
