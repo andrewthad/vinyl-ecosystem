@@ -1,0 +1,44 @@
+name:                siphon
+version:             0.1.0.0
+synopsis:            CSV parsing with vinyl records
+description:         Please see README.md
+homepage:            http://github.com/andrewthad/vinyl-ecosystem
+license:             BSD3
+license-file:        LICENSE
+author:              Andrew Martin
+maintainer:          andrew.thaddeus@gmail.com
+copyright:           2016 Andrew Martin
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     
+    Siphon.Types
+    Siphon.Field
+    Siphon.Parse
+    Siphon.Internal
+  build-depends:       
+      base >= 4.7 && < 5
+    , attoparsec
+    , bytestring
+    , text
+    , vinyl
+    , vinyl-plus
+    , pipes
+    , vector
+    , transformers
+  default-language:    Haskell2010
+  default-extensions:
+    RankNTypes
+    GADTs
+    ScopedTypeVariables
+    KindSignatures
+    DataKinds
+    TypeFamilies
+    TypeOperators
+
+source-repository head
+  type:     git
+  location: https://github.com/andrewthad/vinyl-ecosystem

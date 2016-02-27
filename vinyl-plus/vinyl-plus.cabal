@@ -42,6 +42,7 @@ library
     StandaloneDeriving
     ConstraintKinds
     ScopedTypeVariables
+    BangPatterns
     -- FlexibleInstances
     -- FlexibleContexts
 

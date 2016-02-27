@@ -64,10 +64,10 @@ minuteUnpadded :: Chronoparser 'Minute
 minuteUnpadded = minuteParser $ twoDigitUnpadded 0 59 "minute"
 
 secondPadded :: Chronoparser 'Second
-secondPadded = secondParser $ twoDigitPadded 1 59 "second"
+secondPadded = secondParser $ twoDigitPadded 0 59 "second"
 
 secondUnpadded :: Chronoparser 'Second
-secondUnpadded = secondParser $ twoDigitUnpadded 1 59 "second"
+secondUnpadded = secondParser $ twoDigitUnpadded 0 59 "second"
 
 twoDigitPadded :: Int -> Int -> String -> Parser Int
 twoDigitPadded low high name =

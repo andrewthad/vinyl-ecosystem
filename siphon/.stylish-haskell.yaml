@@ -73,7 +73,6 @@ columns: 80
 #
 # No language extensions are enabled by default.
 language_extensions:
-    - BangPatterns
     - ConstraintKinds
     - DataKinds
     - DeriveDataTypeable
