@@ -34,12 +34,23 @@ instance (Show (CoRec f (s ': rs)), Show (f r)) => Show (CoRec f (r ': s ': rs))
 
 class i ~ RIndex r rs => CElemX (r :: k) (rs :: [k]) (i :: Nat) where
   clift :: f r -> CoRec f rs
+  cget  :: proxy r -> CoRec f rs -> Maybe (f r)
+  cput  :: f r -> CoRec f rs -> CoRec f rs
+  -- TODO: add clens. I'm not good with that kind of thing.
 
 instance (r ~ s) => CElemX r (s ': rs) 'Z where
-  clift = CoRecHere
+  clift  = CoRecHere
+  cget _ (CoRecHere v)    = Just v
+  cget _ (CoRecThere _)   = Nothing
+  cput v (CoRecHere _)    = CoRecHere v
+  cput _ r@(CoRecThere _) = r
 
 instance (RIndex r (s ': rs) ~ 'S i, CElemX r rs i) => CElemX r (s ': rs) ('S i) where
   clift v = CoRecThere (clift v)
+  cget _ (CoRecHere _)      = Nothing
+  cget proxy (CoRecThere c) = cget proxy c
+  cput _ r@(CoRecHere _)    = r
+  cput v (CoRecThere r) = CoRecThere (cput v r)
 
 class is ~ RImage sub super => CSubsetX (sub :: [k]) (super :: [k]) is where
   ccast :: CoRec f sub -> CoRec f super
