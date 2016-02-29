@@ -16,6 +16,8 @@ packages:
 extra-deps:
   - 'transformers-0.5.1.0'
   - 'transformers-compat-0.5.1.4'
+  - 'comonad-5'
+  - 'bifunctors-5.2'
 
 # Override default flag values for local packages and extra-deps
 flags: {}

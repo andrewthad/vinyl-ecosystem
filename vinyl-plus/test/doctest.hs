@@ -1,7 +1,13 @@
-import Test.DocTest (doctest)
+import           Test.DocTest (doctest)
 
 main :: IO ()
-main = doctest 
+main = doctest
   [ "-XDataKinds"
-  , "src/Data/Vinyl/Plus/Tagged.hs"
+  , "-XMagicHash"
+  , "-XRankNTypes"
+  , "-XPolyKinds"
+  , "-XKindSignatures"
+  , "-XScopedTypeVariables"
+  , "src/Data/Vinyl/Tagged.hs"
+  , "src/Data/Vinyl/Tagged/Proxy/Identity.hs"
   ]

@@ -85,6 +85,7 @@ language_extensions:
     - GADTs
     - GeneralizedNewtypeDeriving
     - LambdaCase
+    - MagicHash
     - MultiParamTypeClasses
     - NoImplicitPrelude
     - NoMonomorphismRestriction
