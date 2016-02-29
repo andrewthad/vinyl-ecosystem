@@ -5,7 +5,14 @@ module Data.Vinyl.Plus.CoRec where
 
 import           Data.Vinyl.Core
 import           Data.Vinyl.TypeLevel
+import           Data.Vinyl.Plus.TypeLevel
+import           Data.Vinyl.Lens
 
+-- | 'CoRec' is a generalized coproduct. The value it holds
+--   is the interpretation function @f@ applied to exactly one 
+--   of the types in the list. While a 'Rec' can be thought of
+--   a nesting of tuples, a 'CoRec' can be thought of as a 
+--   nesting of 'Either's.
 data CoRec :: (u -> *) -> [u] -> * where
   CoRecHere  :: !(f r) -> CoRec f (r ': rs)
   CoRecThere :: !(CoRec f rs) -> CoRec f (r ': rs)
@@ -32,11 +39,31 @@ instance (Show (CoRec f (s ': rs)), Show (f r)) => Show (CoRec f (r ': s ': rs))
   show (CoRecHere a) = "CoRecHere (" ++ show a ++ ")"
   show (CoRecThere cr) = "CoRecThere (" ++ show cr ++ ")"
 
+-- | This is equivalent to the 'RElem' class from @Data.Vinyl.Lens@.
+--   The functions it provides work on 'CoRec's instead of 'Rec's.
+--   It also provides a lifting function 'clift', which has no
+--   equivalent operation on 'Rec's. Unfortunately, we cannot
+--   currently provide @cprism@ without incurring a dependency
+--   on @lens@.
+--   If 'CoRec' were merged into @vinyl@, this typeclass could be 
+--   eliminated, and its methods could be added to 'RElem'.
 class i ~ RIndex r rs => CElemX (r :: k) (rs :: [k]) (i :: Nat) where
-  clift :: f r -> CoRec f rs
+  -- | Get a value from a 'CoRec'. Note that, unlike 'rget',
+  --   this function may not find the requested element, so
+  --   the result is wrapped in 'Maybe'.
   cget  :: proxy r -> CoRec f rs -> Maybe (f r)
+  -- | If the element in the 'CoRec' is of a certain type,
+  --   modify it. Otherwise, leave the 'CoRec' unchanged.
+  cmodify :: (f r -> f r) -> CoRec f rs -> CoRec f rs
+  -- | If the element in the 'CoRec' is of a certain type,
+  --   replace it. This function is provided for symmetry 
+  --   with 'rput', but it is not typically useful.
+  --   Usually, 'clift' is more useful.
   cput  :: f r -> CoRec f rs -> CoRec f rs
-  -- TODO: add clens. I'm not good with that kind of thing.
+  -- | Lift an element into a 'CoRec'.
+  clift :: f r -> CoRec f rs
+  -- TODO: add cprism. I'm not good with that kind of thing.
+  -- Also, cprism is not possible without a lens dependency
 
 instance (r ~ s) => CElemX r (s ': rs) 'Z where
   clift  = CoRecHere
@@ -44,6 +71,8 @@ instance (r ~ s) => CElemX r (s ': rs) 'Z where
   cget _ (CoRecThere _)   = Nothing
   cput v (CoRecHere _)    = CoRecHere v
   cput _ r@(CoRecThere _) = r
+  cmodify f (CoRecHere v)    = CoRecHere (f v)
+  cmodify _ r@(CoRecThere _) = r
 
 instance (RIndex r (s ': rs) ~ 'S i, CElemX r rs i) => CElemX r (s ': rs) ('S i) where
   clift v = CoRecThere (clift v)
@@ -51,8 +80,12 @@ instance (RIndex r (s ': rs) ~ 'S i, CElemX r rs i) => CElemX r (s ': rs) ('S i)
   cget proxy (CoRecThere c) = cget proxy c
   cput _ r@(CoRecHere _)    = r
   cput v (CoRecThere r) = CoRecThere (cput v r)
+  cmodify _ r@(CoRecHere _) = r
+  cmodify f (CoRecThere r)  = CoRecThere (cmodify f r)
 
 class is ~ RImage sub super => CSubsetX (sub :: [k]) (super :: [k]) is where
+  -- | Upcast a 'CoRec' to another 'CoRec' that could be
+  --   inhabited by additional types.
   ccast :: CoRec f sub -> CoRec f super
 
 instance CSubsetX '[] super '[] where
@@ -70,6 +103,12 @@ type CSubset sub super = CSubsetX sub super (RImage sub super)
 --
 -- example2 :: CoRec Maybe '[Bool,Int] -> CoRec Maybe '[Int,Bool,Char]
 -- example2 = ccast
+--
+-- example3 :: Maybe Int -> CoRec Maybe '[Bool,Int] -> CoRec Maybe '[Bool,Int]
+-- example3 = cput
+-- 
+-- example4 :: CoRec Maybe '[Bool,Int] -> Maybe (Maybe Int)
+-- example4 = cget (Nothing :: Maybe Int)
 
 -- class ToCoRec r rs where
 --   toCoRec :: f r -> CoRec f rs

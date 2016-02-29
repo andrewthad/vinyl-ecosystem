@@ -6,8 +6,8 @@ module Data.Tagged.Functor where
 import           Data.Proxy
 import           Data.Tuple.TypeLevel (Fst, Snd)
 import           Data.Vinyl.Core
-import           Data.Vinyl.Functor   (Identity (..))
 import           GHC.TypeLits
+import           Data.Functor.Identity (Identity(..))
 
 newtype TaggedFunctor (f :: b -> *) (x :: (a,b)) =
   TaggedFunctor { getTaggedFunctor :: f (Snd x) }
