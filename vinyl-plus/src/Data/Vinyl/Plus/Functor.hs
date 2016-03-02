@@ -5,10 +5,9 @@ module Data.Vinyl.Plus.Functor where
 
 import           Data.Functor.Contravariant
 import           Data.Vinyl.Core
-import           Data.Vinyl.Plus.CoRec
 import           Data.Vinyl.Plus.TypeLevel
-import           Data.Vinyl.Plus.Types
 import           Data.Vinyl.TypeLevel
+import           Data.Vinyl.Types
 
 newtype FunctorRec fs a = FunctorRec { getFunctorRec :: Rec (Flap a) fs }
   deriving (Show)

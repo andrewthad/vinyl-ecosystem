@@ -16,8 +16,8 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     
-      Data.Vinyl.Plus.Types
-    , Data.Vinyl.Plus.CoRec
+      Data.Vinyl.Types
+    , Data.Vinyl.Optic
     , Data.Vinyl.Plus.Functor
     , Data.Vinyl.Prelude
     , Data.Vinyl.Plus.Functor.Prelude

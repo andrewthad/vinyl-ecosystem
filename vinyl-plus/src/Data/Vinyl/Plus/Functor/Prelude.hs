@@ -8,10 +8,9 @@ import           Data.Functor.Identity
 import           Data.Functor.Product
 import           Data.Monoid             (Endo (..))
 import           Data.Vinyl.Core
-import           Data.Vinyl.Plus.CoRec
 import           Data.Vinyl.Plus.Functor
-import           Data.Vinyl.Plus.Types
 import           Data.Vinyl.TypeLevel
+import           Data.Vinyl.Types
 
 -- This needs to be imported qualified
 

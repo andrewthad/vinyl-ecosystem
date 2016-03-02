@@ -1,0 +1,13 @@
+#!/bin/bash
+OLD_FILE="$1"
+NEW_FILE="$2"
+OLD_MODULE="$(echo $OLD_FILE | sed -E 's/(\.hs|src\/)//g; s/\//./g')"
+NEW_MODULE="$(echo $NEW_FILE | sed -E 's/(\.hs|src\/)//g; s/\//./g')"
+
+echo $OLD_MODULE
+echo $NEW_MODULE
+
+mv "$OLD_FILE" "$NEW_FILE"
+
+find . -name '*.hs' -exec sed -i -e "s/$OLD_MODULE/$NEW_MODULE/" {} \;
+

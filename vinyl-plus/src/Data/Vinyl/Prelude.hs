@@ -14,11 +14,10 @@ import           Data.TypeMap              (TypeMap)
 import qualified Data.TypeMap              as TypeMap
 import           Data.Vinyl.Core
 import           Data.Vinyl.Functor        (Lift (..))
-import           Data.Vinyl.Plus.CoRec
 import           Data.Vinyl.Plus.Functor
 import           Data.Vinyl.Plus.TypeLevel (ListAll)
-import           Data.Vinyl.Plus.Types
 import           Data.Vinyl.TypeLevel
+import           Data.Vinyl.Types
 
 -- This needs to be imported qualified
 
@@ -68,10 +67,18 @@ fromTypeMap' m = fromTypeMap (rpure Proxy :: Rec Proxy rs) m
 length :: Rec f rs -> Int
 length = foldl (\i _ -> i + 1) 0
 
+
+
 coapply :: Rec (Lift (->) f g) rs -> CoRec f rs -> CoRec g rs
 coapply (Lift f :& rs) cr = case cr of
   CoRecHere v -> CoRecHere (f v)
   CoRecThere cr' -> CoRecThere (coapply rs cr')
+
+apply :: Rec (Lift (->) f g) rs -> Rec f rs -> Rec g rs
+apply = rapply
+
+traverse :: Applicative h => (forall x. f x -> h (g x)) -> Rec f rs -> h (Rec g rs)
+traverse = rtraverse
 
 replace :: CoRec f rs -> Rec f rs -> Rec f rs
 replace (CoRecHere v) (_ :& rs) = v :& rs
@@ -128,5 +135,8 @@ just = rmap (Compose . Just)
 
 right :: Rec f rs -> Rec (Compose (Either a) f) rs
 right = rmap (Compose . Right)
+
+map :: (forall x. f x -> g x) -> Rec f rs -> Rec g rs
+map = rmap
 
 
