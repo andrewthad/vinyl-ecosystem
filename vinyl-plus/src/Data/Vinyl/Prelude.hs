@@ -1,8 +1,9 @@
-module Data.Vinyl.Plus.Prelude where
+module Data.Vinyl.Prelude where
 
 import           Prelude                   hiding (foldl, head, tail, unzip,
                                             zip, zip3, zip4)
 
+import           Data.Functor.Compose
 import           Data.Functor.Constant
 import           Data.Functor.Identity
 import           Data.Functor.Product
@@ -121,4 +122,11 @@ zip4 :: Rec f rs -> Rec g rs -> Rec h rs -> Rec k rs -> Rec (FunctorRec '[f,g,h,
 zip4 RNil RNil RNil RNil = RNil
 zip4 (a :& as) (b :& bs) (c :& cs) (d :& ds) =
   FunctorRec (Flap a :& Flap b :& Flap c :& Flap d :& RNil) :& zip4 as bs cs ds
+
+just :: Rec f rs -> Rec (Compose Maybe f) rs
+just = rmap (Compose . Just)
+
+right :: Rec f rs -> Rec (Compose (Either a) f) rs
+right = rmap (Compose . Right)
+
 

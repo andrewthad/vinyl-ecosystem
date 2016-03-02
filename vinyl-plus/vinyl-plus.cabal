@@ -15,27 +15,28 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Data.Vinyl.Plus.Types
-                     , Data.Vinyl.Plus.CoRec
-                     , Data.Vinyl.Plus.Functor
-                     , Data.Vinyl.Plus.Prelude
-                     , Data.Vinyl.Plus.Functor.Prelude
-                     -- , Data.Vinyl.Tagged
-                     , Data.Vinyl.Tagged.Class
-                     , Data.Vinyl.Tagged.Proxy.Functor
-                     , Data.Vinyl.Tagged.Proxy.Identity
-                     , Data.Vinyl.Plus.TypeLevel
-                     , Data.Vinyl.Plus.Internal
-                     , Data.Tuple.TypeLevel
-                     , Data.Tagged.Functor
-                     , Data.TypeMap
-  build-depends:       base >= 4.7 && < 5
-                     , vinyl
-                     , transformers
-                     , contravariant
-                     , unordered-containers
-                     , ghc-prim
-                     , profunctors
+  exposed-modules:     
+      Data.Vinyl.Plus.Types
+    , Data.Vinyl.Plus.CoRec
+    , Data.Vinyl.Plus.Functor
+    , Data.Vinyl.Prelude
+    , Data.Vinyl.Plus.Functor.Prelude
+    , Data.Vinyl.Tagged.Class
+    , Data.Vinyl.Tagged.Proxy.Functor
+    , Data.Vinyl.Tagged.Proxy.Identity
+    , Data.Vinyl.Plus.TypeLevel
+    , Data.Vinyl.Plus.Internal
+    , Data.Tuple.TypeLevel
+    , Data.Tagged.Functor
+    , Data.TypeMap
+  build-depends:       
+      base >= 4.7 && < 5
+    , vinyl
+    , transformers
+    , contravariant
+    , unordered-containers
+    , ghc-prim
+    , profunctors
   default-language:    Haskell2010
   default-extensions:
     MagicHash
@@ -50,8 +51,6 @@ library
     ConstraintKinds
     ScopedTypeVariables
     BangPatterns
-    -- FlexibleInstances
-    -- FlexibleContexts
 
 test-suite doctests
   type:             exitcode-stdio-1.0
