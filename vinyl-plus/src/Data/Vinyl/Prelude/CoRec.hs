@@ -1,23 +1,23 @@
 module Data.Vinyl.Prelude.CoRec where
 
-import           Prelude                    hiding (foldl, head, map, tail,
-                                             traverse, unzip, zip, zip3, zip4)
+import           Prelude                      hiding (foldl, head, map, tail,
+                                               traverse, unzip, zip, zip3, zip4)
 
 import           Data.Functor.Compose
 import           Data.Functor.Constant
-import           Data.Functor.Contravariant (Op (..))
+import           Data.Functor.Contravariant   (Op (..))
 import           Data.Functor.Identity
 import           Data.Functor.Product
-import           Data.Monoid                (Endo (..))
-import           Data.Proxy                 (Proxy (Proxy))
-import           Data.Typeable              (Typeable)
-import           Data.TypeMap               (TypeMap)
-import qualified Data.TypeMap               as TypeMap
+import           Data.Monoid                  (Endo (..))
+import           Data.Proxy                   (Proxy (Proxy))
+import           Data.Typeable                (Typeable)
+import           Data.TypeMap                 (TypeMap)
+import qualified Data.TypeMap                 as TypeMap
 import           Data.Vinyl.Core
-import           Data.Vinyl.Functor         (Lift (..))
+import           Data.Vinyl.Functor           (Lift (..))
 import           Data.Vinyl.Optic.Plain.Class
 import           Data.Vinyl.Plus.Functor
-import           Data.Vinyl.Plus.TypeLevel  (ListAll)
+import           Data.Vinyl.Plus.TypeLevel    (ListAll)
 import           Data.Vinyl.TypeLevel
 import           Data.Vinyl.Types
 
@@ -49,13 +49,13 @@ replace :: Rec f rs -> CoRec f rs -> CoRec f rs
 replace (r :& rs) (CoRecHere _)   = CoRecHere r
 replace (_ :& rs) (CoRecThere cr) = CoRecThere (replace rs cr)
 
-modify' :: Rec (Compose Endo f) rs -> CoRec f rs -> CoRec f rs
-modify' (Compose (Endo g) :& _) (CoRecHere r) = CoRecHere (g r)
-modify' (_ :& rs) (CoRecThere cr) = CoRecThere (modify' rs cr)
-
-modify :: Rec Endo rs -> CoRec Identity rs -> CoRec Identity rs
-modify (Endo g :& _) (CoRecHere (Identity r)) = CoRecHere (Identity (g r))
+modify :: Rec (Compose Endo f) rs -> CoRec f rs -> CoRec f rs
+modify (Compose (Endo g) :& _) (CoRecHere r) = CoRecHere (g r)
 modify (_ :& rs) (CoRecThere cr) = CoRecThere (modify rs cr)
+
+modify' :: Rec Endo rs -> CoRec Identity rs -> CoRec Identity rs
+modify' (Endo g :& _) (CoRecHere (Identity r)) = CoRecHere (Identity (g r))
+modify' (_ :& rs) (CoRecThere cr) = CoRecThere (modify' rs cr)
 
 -- | There is not a actual traverse function for 'CoRec'. Notice how
 --   this does not have an 'Applicative' constraint and consequently

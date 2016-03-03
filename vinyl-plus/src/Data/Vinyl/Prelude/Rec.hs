@@ -33,6 +33,12 @@ cons = (:&)
 uncons :: Rec f (r ': rs) -> (f r, Rec f rs)
 uncons (r :& rs) = (r, rs)
 
+curry :: (Rec f (a ': as) -> b) -> f a -> Rec f as -> b
+curry f r rs = f (r :& rs)
+
+uncurry :: (f a -> Rec f as -> b) -> Rec f (a ': as) -> b
+uncurry f (r :& rs) = f r rs
+
 append :: Rec f rs -> Rec f ss -> Rec f (rs ++ ss)
 append = rappend
 
