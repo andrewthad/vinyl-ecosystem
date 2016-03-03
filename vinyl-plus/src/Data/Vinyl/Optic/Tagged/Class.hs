@@ -6,7 +6,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeOperators         #-}
 
-module Data.Vinyl.Tagged.Class
+module Data.Vinyl.Optic.Tagged.Class
   ( IxElem(..)
   , rsetBy'
   ) where

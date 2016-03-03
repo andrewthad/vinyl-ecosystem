@@ -8,7 +8,7 @@
 --   (2) The @VisibleTypeApplication@ extension is unavailable.
 --
 
-module Data.Vinyl.Tagged.Proxy.Identity
+module Data.Vinyl.Optic.Tagged.Proxy.Identity
   (
   -- * Functions
     lens
@@ -23,7 +23,7 @@ module Data.Vinyl.Tagged.Proxy.Identity
 import           Data.Functor.Identity   (Identity (..))
 import           Data.Tagged.Functor     (TaggedFunctor)
 import           Data.Vinyl.Core         (Rec)
-import           Data.Vinyl.Tagged.Class
+import           Data.Vinyl.Optic.Tagged.Class
 import           GHC.Prim                (Proxy#, proxy#)
 
 lens :: forall k g rs i v proxy. (Functor g, IxElem k rs i v)

@@ -22,9 +22,9 @@ library
     , Data.Vinyl.Prelude.Rec
     , Data.Vinyl.Prelude.CoRec
     , Data.Vinyl.Plus.Functor.Prelude
-    , Data.Vinyl.Tagged.Class
-    , Data.Vinyl.Tagged.Proxy.Functor
-    , Data.Vinyl.Tagged.Proxy.Identity
+    , Data.Vinyl.Optic.Tagged.Class
+    , Data.Vinyl.Optic.Tagged.Proxy.Functor
+    , Data.Vinyl.Optic.Tagged.Proxy.Identity
     , Data.Vinyl.Plus.TypeLevel
     , Data.Vinyl.Plus.Internal
     , Data.Tuple.TypeLevel
