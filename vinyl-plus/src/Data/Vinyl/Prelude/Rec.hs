@@ -1,7 +1,7 @@
-module Data.Vinyl.Prelude where
+module Data.Vinyl.Prelude.Rec where
 
-import           Prelude                   hiding (foldl, head, tail, unzip,
-                                            zip, zip3, zip4)
+import           Prelude                   hiding (foldl, head, map, tail,
+                                            unzip, zip, zip3, zip4)
 
 import           Data.Functor.Compose
 import           Data.Functor.Constant
@@ -67,13 +67,6 @@ fromTypeMap' m = fromTypeMap (rpure Proxy :: Rec Proxy rs) m
 length :: Rec f rs -> Int
 length = foldl (\i _ -> i + 1) 0
 
-
-
-coapply :: Rec (Lift (->) f g) rs -> CoRec f rs -> CoRec g rs
-coapply (Lift f :& rs) cr = case cr of
-  CoRecHere v -> CoRecHere (f v)
-  CoRecThere cr' -> CoRecThere (coapply rs cr')
-
 apply :: Rec (Lift (->) f g) rs -> Rec f rs -> Rec g rs
 apply = rapply
 
@@ -84,9 +77,13 @@ replace :: CoRec f rs -> Rec f rs -> Rec f rs
 replace (CoRecHere v) (_ :& rs) = v :& rs
 replace (CoRecThere cr) (r :& rs) = r :& replace cr rs
 
-modify :: CoRec Endo rs -> Rec Identity rs -> Rec Identity rs
-modify (CoRecHere (Endo g)) (Identity r :& rs) = Identity (g r) :& rs
+modify :: CoRec (Compose Endo f) rs -> Rec f rs -> Rec f rs
+modify (CoRecHere (Compose (Endo g))) (r :& rs) = g r :& rs
 modify (CoRecThere cr) (r :& rs) = r :& modify cr rs
+
+modify' :: CoRec Endo rs -> Rec Identity rs -> Rec Identity rs
+modify' (CoRecHere (Endo g)) (Identity r :& rs) = Identity (g r) :& rs
+modify' (CoRecThere cr) (r :& rs) = r :& modify' cr rs
 
 -- Requires that the list be infinite
 fromInfiniteList :: Rec proxy rs -> [a] -> Rec (Constant a) rs
@@ -102,10 +99,6 @@ fromList (_ :& rs) (x : xs) = case fromList rs xs of
 toList :: Rec (Constant a) rs -> [a]
 toList RNil = []
 toList (Constant a :& rs) = a : toList rs
-
-toValue :: CoRec (Constant a) rs -> a
-toValue (CoRecHere (Constant a)) = a
-toValue (CoRecThere cr) = toValue cr
 
 zip :: Rec f rs -> Rec g rs -> Rec (Product f g) rs
 zip RNil RNil           = RNil
@@ -131,10 +124,10 @@ zip4 (a :& as) (b :& bs) (c :& cs) (d :& ds) =
   FunctorRec (Flap a :& Flap b :& Flap c :& Flap d :& RNil) :& zip4 as bs cs ds
 
 just :: Rec f rs -> Rec (Compose Maybe f) rs
-just = rmap (Compose . Just)
+just = map (Compose . Just)
 
 right :: Rec f rs -> Rec (Compose (Either a) f) rs
-right = rmap (Compose . Right)
+right = map (Compose . Right)
 
 map :: (forall x. f x -> g x) -> Rec f rs -> Rec g rs
 map = rmap

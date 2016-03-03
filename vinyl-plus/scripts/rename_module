@@ -10,4 +10,5 @@ echo $NEW_MODULE
 mv "$OLD_FILE" "$NEW_FILE"
 
 find . -name '*.hs' -exec sed -i -e "s/$OLD_MODULE/$NEW_MODULE/" {} \;
+find . -name '*.cabal' -exec sed -i -e "s/$OLD_MODULE/$NEW_MODULE/" {} \;
 

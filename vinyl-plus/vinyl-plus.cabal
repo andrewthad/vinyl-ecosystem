@@ -19,7 +19,8 @@ library
       Data.Vinyl.Types
     , Data.Vinyl.Optic
     , Data.Vinyl.Plus.Functor
-    , Data.Vinyl.Prelude
+    , Data.Vinyl.Prelude.Rec
+    , Data.Vinyl.Prelude.CoRec
     , Data.Vinyl.Plus.Functor.Prelude
     , Data.Vinyl.Tagged.Class
     , Data.Vinyl.Tagged.Proxy.Functor
