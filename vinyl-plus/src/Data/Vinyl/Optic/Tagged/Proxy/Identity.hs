@@ -20,11 +20,11 @@ module Data.Vinyl.Optic.Tagged.Proxy.Identity
   ) where
 
 -- import           Data.Coerce
-import           Data.Functor.Identity   (Identity (..))
-import           Data.Tagged.Functor     (TaggedFunctor)
-import           Data.Vinyl.Core         (Rec)
+import           Data.Functor.Identity         (Identity (..))
+import           Data.Tagged.Functor           (TaggedFunctor)
+import           Data.Vinyl.Core               (Rec)
 import           Data.Vinyl.Optic.Tagged.Class
-import           GHC.Prim                (Proxy#, proxy#)
+import           GHC.Prim                      (Proxy#, proxy#)
 
 lens :: forall k g rs i v proxy. (Functor g, IxElem k rs i v)
   => proxy k -> (v -> g v)

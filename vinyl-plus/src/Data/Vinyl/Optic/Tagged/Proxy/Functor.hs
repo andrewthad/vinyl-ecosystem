@@ -8,14 +8,14 @@
 --
 -- If you are working with labeled records that use 'Identity'
 -- inner functor for 'TaggedFunctor', you should consider
--- using @Data.Vinyl.Optic.Tagged.Proxy.Identity@ instead.
+-- using @Data.Vinyl.Optic.Plain.Class.Tagged.Proxy.Identity@ instead.
 --
 module Data.Vinyl.Optic.Tagged.Proxy.Functor where
 
-import           Data.Tagged.Functor     (TaggedFunctor)
-import           Data.Vinyl.Core         (Rec)
+import           Data.Tagged.Functor           (TaggedFunctor)
+import           Data.Vinyl.Core               (Rec)
 import           Data.Vinyl.Optic.Tagged.Class
-import           GHC.Prim                (Proxy#, proxy#)
+import           GHC.Prim                      (Proxy#, proxy#)
 
 lens :: forall k g f rs i v proxy. (Functor g, IxElem k rs i v)
   => proxy k -> (f v -> g (f v))

@@ -17,7 +17,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     
       Data.Vinyl.Types
-    , Data.Vinyl.Optic
+    , Data.Vinyl.Optic.Plain.Class
     , Data.Vinyl.Plus.Functor
     , Data.Vinyl.Prelude.Rec
     , Data.Vinyl.Prelude.CoRec

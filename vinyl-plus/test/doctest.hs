@@ -12,5 +12,5 @@ main = doctest
   , "-XTypeFamilies"
   , "src/Data/Vinyl/Prelude/CoRec.hs"
   , "src/Data/Vinyl/Tagged.hs"
-  , "src/Data.Vinyl.Optic.Tagged.Proxy.Identity.hs"
+  , "src/Data.Vinyl.Optic.Plain.Class.Tagged.Proxy.Identity.hs"
   ]

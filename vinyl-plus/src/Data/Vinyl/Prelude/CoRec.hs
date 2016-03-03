@@ -15,7 +15,7 @@ import           Data.TypeMap               (TypeMap)
 import qualified Data.TypeMap               as TypeMap
 import           Data.Vinyl.Core
 import           Data.Vinyl.Functor         (Lift (..))
-import           Data.Vinyl.Optic
+import           Data.Vinyl.Optic.Plain.Class
 import           Data.Vinyl.Plus.Functor
 import           Data.Vinyl.Plus.TypeLevel  (ListAll)
 import           Data.Vinyl.TypeLevel

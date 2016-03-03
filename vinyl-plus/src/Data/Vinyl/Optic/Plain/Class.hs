@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE FlexibleInstances #-}
 
-module Data.Vinyl.Optic where
+module Data.Vinyl.Optic.Plain.Class where
 
 import           Data.Profunctor.Choice    (Choice)
 import           Data.Vinyl.Core
