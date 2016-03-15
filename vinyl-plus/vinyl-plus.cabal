@@ -18,7 +18,6 @@ library
   exposed-modules:     
       Data.Vinyl.Types
     , Data.Vinyl.Optic.Plain.Class
-    , Data.Vinyl.Plus.Functor
     , Data.Vinyl.Prelude.Rec
     , Data.Vinyl.Prelude.CoRec
     , Data.Vinyl.Plus.Functor.Prelude

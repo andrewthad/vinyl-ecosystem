@@ -13,11 +13,11 @@ packages:
   # - './siphon'
 
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
-extra-deps:
-  - 'transformers-0.5.1.0'
-  - 'transformers-compat-0.5.1.4'
-  - 'comonad-5'
-  - 'bifunctors-5.2'
+extra-deps: []
+  #  - 'transformers-0.5.1.0'
+  #  - 'transformers-compat-0.5.1.4'
+  #  - 'comonad-5'
+  #  - 'bifunctors-5.2'
 
 # Override default flag values for local packages and extra-deps
 flags: {}

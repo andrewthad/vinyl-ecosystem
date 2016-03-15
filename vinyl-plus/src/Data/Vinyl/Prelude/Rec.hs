@@ -14,7 +14,6 @@ import           Data.TypeMap              (TypeMap)
 import qualified Data.TypeMap              as TypeMap
 import           Data.Vinyl.Core
 import           Data.Vinyl.Functor        (Lift (..))
-import           Data.Vinyl.Plus.Functor
 import           Data.Vinyl.Plus.TypeLevel (ListAll)
 import           Data.Vinyl.TypeLevel
 import           Data.Vinyl.Types
@@ -138,4 +137,15 @@ right = map (Compose . Right)
 map :: (forall x. f x -> g x) -> Rec f rs -> Rec g rs
 map = rmap
 
+fromMaybe :: Rec f rs -> Rec (Compose Maybe f) rs -> Rec f rs
+fromMaybe RNil RNil = RNil
+fromMaybe (r :& rs) (Compose m :& ms) = case m of
+  Nothing -> r :& fromMaybe rs ms
+  Just s  -> s :& fromMaybe rs ms
+
+fromMaybe' :: Rec Identity rs -> Rec Maybe rs -> Rec Identity rs
+fromMaybe' RNil RNil = RNil
+fromMaybe' (r :& rs) (m :& ms) = case m of
+  Nothing -> r :& fromMaybe' rs ms
+  Just s  -> Identity s :& fromMaybe' rs ms
 

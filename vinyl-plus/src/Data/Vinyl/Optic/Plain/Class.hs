@@ -68,6 +68,33 @@ instance (RElem r super i , RSubset sub super is) => RSubset (r ': sub) super (i
   ccast (CoRecHere v) = clift v
   ccast (CoRecThere cr) = ccast cr
 
+-- | Two record types are equivalent when they are subtypes of each other.
+type REquivalent rs ss is js = (RSubset rs ss is, RSubset ss rs js)
+
+-- | A shorthand for 'RElem' which supplies its index.
+type RElem' r rs = RElem r rs (RIndex r rs)
+
+-- | An infix operator for 'RMember\''.
+type r ∈ rs = RElem' r rs 
+
+-- | A shorthand for 'RSubset' which supplies its image.
+type RSubset' rs ss = RSubset rs ss (RImage rs ss)
+
+-- | An infix operator for 'RSubset\''
+type rs ⊆ ss = RSubset' rs ss 
+
+-- | A shorthand for 'REquivalent' which supplies its images.
+type REquivalent' rs ss = REquivalent rs ss (RImage rs ss) (RImage ss rs)
+
+-- | An infix operator for 'REquivalent\''
+type rs ≅ ss = REquivalent' rs ss 
+
+-- | A non-unicode equivalent of @(⊆)@.
+type rs <: ss = rs ⊆ ss
+
+-- | A non-unicode equivalent of @(≅)@.
+type rs :~: ss = rs ≅ ss
+
 -- type CElem r rs = CElemX r rs (RIndex r rs)
 -- type CSubset sub super = CSubsetX sub super (RImage sub super)
 

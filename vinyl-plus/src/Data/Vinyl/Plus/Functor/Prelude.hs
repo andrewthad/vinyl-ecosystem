@@ -8,7 +8,6 @@ import           Data.Functor.Identity
 import           Data.Functor.Product
 import           Data.Monoid             (Endo (..))
 import           Data.Vinyl.Core
-import           Data.Vinyl.Plus.Functor
 import           Data.Vinyl.TypeLevel
 import           Data.Vinyl.Types
 

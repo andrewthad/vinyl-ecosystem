@@ -4,15 +4,19 @@ module Data.Vinyl.Operational.Core where
 import           Control.Monad
 import           Control.Monad.Operational
 import           Control.Monad.Operational.Interpret
-import           Data.Vinyl.Core
-import           Data.Vinyl.Plus.CoRec
-import           Data.Vinyl.Plus.Functor
-import           Data.Vinyl.Plus.Types
+import           Data.Vinyl.Types
+import           Data.Vinyl.Optic.Plain.Class
 
 data ApplyInstr m instr = ApplyInstr (forall a. instr a -> m a)
 
-coinstr :: CElem instr rs => instr a -> ProgramT (FunctorCoRec rs) m a
+coinstr :: RElem' instr rs => instr a -> ProgramT (FunctorCoRec rs) m a
 coinstr instr = singleton (FunctorCoRec (clift (Flap instr)))
+
+castProgramT :: (Monad m, RSubset' sub super) => ProgramT (FunctorCoRec sub) m a -> ProgramT (FunctorCoRec super) m a
+castProgramT prog = mapProgramT (FunctorCoRec . ccast . getFunctorCoRec) prog
+
+coliftProgramT :: (RElem' instr rs, Monad m) => ProgramT instr m a -> ProgramT (FunctorCoRec rs) m a
+coliftProgramT = mapProgramT (FunctorCoRec . clift . Flap)
 
 recApplyInstr :: Rec (ApplyInstr m) instrs -> FunctorCoRec instrs a -> m a
 recApplyInstr (_ :& rnext) (FunctorCoRec (CoRecThere cnext)) =
@@ -55,8 +59,5 @@ cointerpretAroundMonadT arounds interpreters = eval <=< viewT
     a <- recApplyInstr interpreters m
     recAroundInstr2 arounds m a
     cointerpretAroundMonadT arounds interpreters (k a)
-
-castProgramT :: (Monad m, CSubset sub super) => ProgramT (FunctorCoRec sub) (ProgramT (FunctorCoRec super) m) a -> ProgramT (FunctorCoRec super) m a
-castProgramT prog = mapProgramT (FunctorCoRec . ccast . getFunctorCoRec) prog
 
 

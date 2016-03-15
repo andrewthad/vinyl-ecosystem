@@ -16,7 +16,6 @@ library
   hs-source-dirs:      src
   exposed-modules:     Data.Vinyl.Operational.Core
   build-depends:       base >= 4.7 && < 5
-                     , vinyl
                      , vinyl-plus
                      , operational
                      , operational-extra

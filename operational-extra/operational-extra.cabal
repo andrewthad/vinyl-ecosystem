@@ -1,5 +1,5 @@
 name:                operational-extra
-version:             0.1.0.0
+version:             0.3
 synopsis:            Interpretation functions and simple instruction sets for operational
 description:         Please see README.md
 homepage:            http://github.com/andrewthad/vinyl-ecosystem
@@ -18,9 +18,14 @@ library
                        Control.Monad.Operational.Wait
                        Control.Monad.Operational.Exception
                        Control.Monad.Operational.Now
+                       Control.Monad.Operational.Console
+                       Control.Monad.Operational.Console.Text
   build-depends:       base >= 4.7 && < 5
-                     , operational
-                     , time
+                     , operational  >= 0.2.3.2
+                     , time         >= 1.4
+                     , transformers >= 0.4.0
+                     , text
+                     , bytestring
   default-language:    Haskell2010
   default-extensions:
     RankNTypes
