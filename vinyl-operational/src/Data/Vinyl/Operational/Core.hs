@@ -7,8 +7,6 @@ import           Control.Monad.Operational.Interpret
 import           Data.Vinyl.Types
 import           Data.Vinyl.Optic.Plain.Class
 
-data ApplyInstr m instr = ApplyInstr (forall a. instr a -> m a)
-
 coinstr :: RElem' instr rs => instr a -> ProgramT (FunctorCoRec rs) m a
 coinstr instr = singleton (FunctorCoRec (clift (Flap instr)))
 

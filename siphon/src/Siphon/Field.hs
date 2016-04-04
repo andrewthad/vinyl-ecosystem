@@ -22,6 +22,9 @@ int = make (noMore "invalid int" <=< maybeToEither "invalid int" . BC8.readInt)
 integer :: Field Integer
 integer = make (noMore "invalid integer" <=< maybeToEither "invalid integer" . BC8.readInteger)
 
+text :: Field Text
+text = Field $ mapLeft show . decodeUtf8'
+
 noMore :: String -> (a, ByteString) -> Either String a
 noMore err (a,bs) = if ByteString.null bs
   then Right a

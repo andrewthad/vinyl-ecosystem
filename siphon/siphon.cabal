@@ -19,6 +19,8 @@ library
     Siphon.Field
     Siphon.Parse
     Siphon.Internal
+    Siphon.Functor
+    Siphon.Example
   build-depends:       
       base >= 4.7 && < 5
     , attoparsec
@@ -26,6 +28,7 @@ library
     , text
     , vinyl
     , vinyl-plus
+    -- , streaming
     , pipes
     , vector
     , transformers
@@ -36,6 +39,7 @@ library
     ScopedTypeVariables
     KindSignatures
     DataKinds
+    PolyKinds
     TypeFamilies
     TypeOperators
 

@@ -5,7 +5,8 @@ import           Control.Monad
 import           Control.Monad.Operational
 import           Control.Monad.Trans.Class
 
-data Around m instr = Around (forall a. instr a -> (m (), a -> m ()))
+data Around     m instr = Around     { getAround :: forall a. instr a -> (m (), a -> m ()) }
+data ApplyInstr m instr = ApplyInstr { getApplyInstr :: forall a. instr a -> m a }
 
 instance Applicative m => Monoid (Around m instr) where
   mempty = Around (\_ -> (pure (), \_ -> pure ()))
