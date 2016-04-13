@@ -28,6 +28,7 @@ library
     , Data.Vinyl.Plus.Internal
     , Data.Tuple.TypeLevel
     , Data.Tagged.Functor
+    , Data.Functor.Higher
     , Data.TypeMap
   build-depends:       
       base >= 4.7 && < 5
@@ -51,6 +52,7 @@ library
     ConstraintKinds
     ScopedTypeVariables
     BangPatterns
+    DefaultSignatures
 
 test-suite doctests
   type:             exitcode-stdio-1.0

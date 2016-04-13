@@ -14,6 +14,7 @@ import           Data.Vinyl.Core
 import           Data.Functor.Contravariant
 import           Data.Vinyl.Plus.TypeLevel
 import           Data.Vinyl.TypeLevel
+import           Data.Functor.Higher
 
 newtype Flap a f = Flap { getFlap :: f a }
   deriving Show
@@ -26,6 +27,16 @@ newtype Flap a f = Flap { getFlap :: f a }
 data CoRec :: (u -> *) -> [u] -> * where
   CoRecHere  :: !(f r) -> CoRec f (r ': rs)
   CoRecThere :: !(CoRec f rs) -> CoRec f (r ': rs)
+
+-- This barely works. `Functor1 m` implies that `m` is kinded:
+--   m :: (* -> *) -> k -> *
+-- Which happens to work in some cases.
+instance Functor1 CoRec where
+  fmap1 f (CoRecHere v) = CoRecHere (f v)
+  fmap1 f (CoRecThere v) = CoRecThere (fmap1 f v)
+
+instance Monad1 CoRec where
+  return1 = error "Monad1 instance cannot be written"
 
 -- For monoid, the item on top is mempty. Doing the
 -- bottom one would require RecApplicative.
