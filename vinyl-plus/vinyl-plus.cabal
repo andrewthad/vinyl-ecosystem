@@ -1,8 +1,8 @@
 name:                vinyl-plus
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Vinyl records utilities
 description:         Please see README.md
-homepage:            http://github.com/andrew/vinyl-plus
+homepage:            http://github.com/andrew/vinyl-ecosystem
 license:             BSD3
 license-file:        LICENSE
 author:              Andrew Martin
@@ -61,5 +61,5 @@ test-suite doctests
 
 source-repository head
   type:     git
-  location: https://github.com/andrewthad/vinyl-plus
+  location: https://github.com/andrewthad/vinyl-ecosystem
 

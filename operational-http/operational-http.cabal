@@ -2,7 +2,7 @@ name:                operational-http
 version:             0.1.0.0
 synopsis:            Initial project template from stack
 description:         Please see README.md
-homepage:            http://github.com/andrewthad/operational-http
+homepage:            http://github.com/andrewthad/vinyl-ecosystem
 license:             BSD3
 license-file:        LICENSE
 author:              Andrew Martin
@@ -29,4 +29,4 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/andrewthad/operational-http
+  location: https://github.com/andrewthad/vinyl-ecosystem
