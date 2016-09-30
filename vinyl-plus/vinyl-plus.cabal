@@ -2,7 +2,7 @@ name:                vinyl-plus
 version:             0.1.0.1
 synopsis:            Vinyl records utilities
 description:         Please see README.md
-homepage:            http://github.com/andrew/vinyl-ecosystem
+homepage:            http://github.com/andrewthad/vinyl-ecosystem
 license:             BSD3
 license-file:        LICENSE
 author:              Andrew Martin
