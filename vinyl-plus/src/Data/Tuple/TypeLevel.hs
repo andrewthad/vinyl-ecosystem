@@ -1,7 +1,7 @@
-{-# LANGUAGE FlexibleInstances    #-}
-
-{-# LANGUAGE FlexibleContexts     #-}
-{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE FlexibleInstances       #-}
+{-# LANGUAGE UndecidableSuperClasses #-}
+{-# LANGUAGE FlexibleContexts        #-}
+{-# LANGUAGE UndecidableInstances    #-}
 
 module Data.Tuple.TypeLevel where
 
